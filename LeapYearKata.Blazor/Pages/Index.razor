@@ -1,0 +1,27 @@
+﻿@page "/"
+@using LeapYearKata.Blazor.ROP
+@inject LeapYearService LeapYearService
+
+<PageTitle>Index</PageTitle>
+
+<MudContainer>
+    <MudForm>
+        <MudTextField Label="Enter Year" @bind-Value="_year" Variant="Variant.Outlined"/>
+        <MudButton Color="Color.Primary" OnClick="CheckYear" Variant="Variant.Filled">Check</MudButton>
+    </MudForm>
+    @if (_result?.IsSuccess == false)
+    {
+        <MudAlert Severity="Severity.Error">@_result.Error</MudAlert>
+    }
+</MudContainer>
+
+@code
+{
+    private string? _year;
+    private Result<bool>? _result;
+
+    private void CheckYear()
+    {
+        _result = int.TryParse(_year, out var year) ? LeapYearService.IsLeapYear(year) : Result<bool>.Fail("Invalid year entered");
+    }
+}

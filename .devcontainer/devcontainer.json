@@ -1,0 +1,4 @@
+﻿{
+  "image": "mcr.microsoft.com/devcontainers/dotnet:6.0",
+  "name": "dotnet-devcontainer"
+}
