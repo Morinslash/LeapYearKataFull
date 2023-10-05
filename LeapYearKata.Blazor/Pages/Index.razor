@@ -9,9 +9,9 @@
         <MudTextField Label="Enter Year" @bind-Value="_year" Variant="Variant.Outlined"/>
         <MudButton Color="Color.Primary" OnClick="CheckYear" Variant="Variant.Filled">Check</MudButton>
     </MudForm>
-    @if (_result?.IsSuccess == false)
+    @if (_result is not null)
     {
-        <MudAlert Severity="Severity.Error">@_result.Error</MudAlert>
+        <MudAlert Severity="@AlertSeverity">@AlertMessage</MudAlert>
     }
 </MudContainer>
 
@@ -19,9 +19,12 @@
 {
     private string? _year;
     private Result<bool>? _result;
+    private Severity AlertSeverity => _result?.IsSuccess == false ? Severity.Error : Severity.Success;
+    private string AlertMessage => _result?.IsSuccess == false ? _result.Error : "This is a Leap year!";
 
     private void CheckYear()
     {
-        _result = int.TryParse(_year, out var year) ? LeapYearService.IsLeapYear(year) : Result<bool>.Fail("Invalid year entered");
+        _result = int.TryParse(_year, out var year) ? LeapYearService.IsItLeap(year) : Result<bool>.Fail("Invalid year entered");
     }
+
 }

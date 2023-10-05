@@ -42,17 +42,25 @@ public class LeapYearStepDefinition : IDisposable
       Assert.Equal(Severity.Error,banner.Instance.Severity);
    }
 
-   [Then(@"the banner should read 'This is not a Leap year!'")]
-   public void ThenTheBannerShouldReadThisIsNotALeapYear()
+   [Then(@"I should see a green banner")]
+   public void ThenIShouldSeeAGreenBanner()
+   {
+      var banner = _page.FindComponent<MudAlert>();
+      Assert.NotNull(banner);
+      Assert.Equal(Severity.Success, banner.Instance.Severity);
+   }
+   
+   [Then(@"the banner should read '(.*)'")]
+   public void ThenTheBannerShouldRead(string expectedText)
    {
       var banner = _page.FindComponent<MudAlert>();
       var renderedContent = _ctx.Render(banner.Instance.ChildContent);
-      Assert.Equal("This is not a Leap Year!", renderedContent.Markup.Trim());
+      Assert.Equal(expectedText, renderedContent.Markup.Trim());
    }
-
    public void Dispose()
    {
       _ctx.Dispose();
       _page.Dispose();
    }
+
 }
